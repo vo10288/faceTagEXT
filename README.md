@@ -1,5 +1,8 @@
 # faceTagEXT
 powershell.exe -ExecutionPolicy Bypass -File .\setup.ps1
+
+
+
 === Face Tagger v2 - Setup ===
 
 [1/2] Scarico face-api.min.js ...
