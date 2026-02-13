@@ -1,0 +1,85 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <style>
+    * { box-sizing: border-box; }
+    body { font-family: system-ui, sans-serif; width: 400px; padding: 12px; margin: 0; }
+    img { max-width: 100%; border-radius: 8px; }
+    input, textarea { width: 100%; margin: 5px 0; padding: 6px 8px; border: 1px solid #ccc; border-radius: 6px; font-size: 13px; }
+    textarea { resize: vertical; }
+    button { width: 100%; margin: 4px 0; padding: 8px; border: none; border-radius: 6px; cursor: pointer; font-size: 13px; font-weight: 600; }
+    .btn-primary { background: #2563eb; color: #fff; }
+    .btn-primary:hover { background: #1d4ed8; }
+    .btn-scan { background: #059669; color: #fff; }
+    .btn-scan:hover { background: #047857; }
+    .btn-secondary { background: #e5e7eb; color: #333; }
+    .btn-secondary:hover { background: #d1d5db; }
+    .btn-danger { background: #fee2e2; color: #b91c1c; }
+    .btn-danger:hover { background: #fecaca; }
+    .row { display: flex; gap: 6px; }
+    .row button { width: 50%; }
+    .small { font-size: 12px; opacity: 0.8; }
+    .section { border-top: 1px solid #e5e7eb; margin-top: 10px; padding-top: 10px; }
+    .list { max-height: 200px; overflow: auto; }
+    .card { border: 1px solid #e5e7eb; border-radius: 8px; padding: 8px; margin-bottom: 8px; }
+    .card img { width: 100%; border-radius: 6px; margin: 4px 0; }
+    .warn { color: #b91c1c; font-size: 12px; margin: 4px 0; }
+    .success { color: #059669; font-size: 12px; margin: 4px 0; }
+    .match-suggestion { background: #f0fdf4; border: 1px solid #86efac; border-radius: 8px; padding: 8px; margin: 6px 0; }
+    .match-suggestion b { color: #059669; }
+    #status { font-size: 12px; margin: 4px 0; min-height: 16px; }
+    .threshold-wrap { display: flex; align-items: center; gap: 8px; font-size: 12px; margin: 4px 0; }
+    .threshold-wrap input[type=range] { flex: 1; margin: 0; padding: 0; }
+  </style>
+</head>
+<body>
+
+  <!-- Stato modelli -->
+  <div id="modelStatus" class="small">⏳ Caricamento modelli face-api.js…</div>
+
+  <!-- Selezione immagine -->
+  <div id="selWrap">
+    <div class="small" id="selInfo">Nessuna selezione. Tasto destro su un'immagine → "Tagga…"</div>
+    <div class="warn" id="err" style="display:none;"></div>
+    <div class="success" id="matchInfo" style="display:none;"></div>
+    <img id="preview" style="display:none;" />
+  </div>
+
+  <!-- Suggerimento match automatico -->
+  <div id="matchSuggestion" class="match-suggestion" style="display:none;"></div>
+
+  <!-- Form -->
+  <input id="name" placeholder="Nome (es. Mario Rossi)" />
+  <input id="tags" placeholder="Tag (separati da virgola)" />
+  <textarea id="notes" rows="2" placeholder="Note"></textarea>
+  <button id="save" class="btn-primary">💾 Salva</button>
+
+  <!-- Scan pagina -->
+  <div class="section">
+    <button id="scanPage" class="btn-scan">🔍 Scansiona volti in questa pagina</button>
+    <div class="threshold-wrap">
+      <span>Soglia:</span>
+      <input type="range" id="threshold" min="0.1" max="0.9" step="0.05" value="0.5" />
+      <span id="thresholdVal">0.50</span>
+    </div>
+    <div id="scanStatus" class="small"></div>
+  </div>
+
+  <!-- Export / Import / Reset -->
+  <div class="section">
+    <div class="row">
+      <button id="export" class="btn-secondary">📤 Export JSON</button>
+      <button id="importBtn" class="btn-secondary">📥 Import JSON</button>
+    </div>
+    <button id="reset" class="btn-danger">🗑️ Reset DB</button>
+    <input id="importFile" type="file" accept="application/json" style="display:none;" />
+  </div>
+
+  <!-- Lista -->
+  <div class="section list" id="list"></div>
+
+  <script src="face-api.min.js"></script>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
